@@ -11,8 +11,9 @@ import UIKit // 新增：引入UIKit框架
 struct Card: Identifiable {
     let id = UUID()
     let title: String
-    let color: Color
-    let imageName: String // 新增：图片名称
+    let duration: String
+    let type: String
+    let imageName: String
 }
 
 struct MusicPage: View {
@@ -35,10 +36,10 @@ struct MusicPage: View {
     private let snapThresholdRatio: CGFloat = 0.2 // 新增：控制滑动吸附的灵敏度 (0.0 到 1.0之间)
     
     let cards: [Card] = [
-        Card(title: "Music 1", color: .purple.opacity(0.8), imageName: "card_image_1"),
-        Card(title: "Music 2", color: .purple.opacity(0.8), imageName: "card_image_2"),
-        Card(title: "Music 3", color: .purple.opacity(0.8), imageName: "card_image_3"),
-        Card(title: "Music 4", color: .purple.opacity(0.8), imageName: "card_image_4")
+        Card(title: "Night Island", duration: "45 MIN", type: "SLEEP MUSIC", imageName: "card_image_1"),
+        Card(title: "Sweet Sleep", duration: "45 MIN", type: "SLEEP MUSIC", imageName: "card_image_2"),
+        Card(title: "Forest Sound", duration: "60 MIN", type: "NATURE SOUNDS", imageName: "card_image_3"),
+        Card(title: "Rainy Day", duration: "50 MIN", type: "AMBIENCE", imageName: "card_image_4")
     ]
     
     var body: some View {
@@ -119,18 +120,15 @@ struct MusicPage: View {
                 
                 // 底部导航栏
                 HStack(spacing: 100) {
-                    TabItem(iconName: "moon.stars.fill", text: "Story", isSelected: selectedTab == .story)
-                        .onTapGesture {
-                            selectedTab = .story
-                        }
-                    TabItem(iconName: "music.note", text: "Music", isSelected: selectedTab == .music)
-                        .onTapGesture {
-                            selectedTab = .music
-                        }
-                    TabItem(iconName: "person.fill", text: "Profile", isSelected: selectedTab == .profile)
-                        .onTapGesture {
-                            selectedTab = .profile
-                        }
+                    TabItem(iconName: "moon.stars.fill", text: "Story", isSelected: selectedTab == .story, onTap: {
+                        selectedTab = .story
+                    })
+                    TabItem(iconName: "music.note", text: "Music", isSelected: selectedTab == .music, onTap: {
+                        selectedTab = .music
+                    })
+                    TabItem(iconName: "person.fill", text: "Profile", isSelected: selectedTab == .profile, onTap: {
+                        selectedTab = .profile
+                    })
                 }
             }
         }
@@ -162,29 +160,31 @@ struct CardView: View {
     let cardHeight: CGFloat
     
     var body: some View {
-        ZStack(alignment: .bottom) { // 将内容对齐到底部
-            // 主要图片背景，填充整个卡片区域
+        ZStack(alignment: .bottom) {
             Image(card.imageName)
                 .resizable()
                 .scaledToFill()
-                .frame(width: cardWidth, height: cardHeight) // 图片尺寸与卡片尺寸一致
-                .clipped() // 确保图片裁剪在自身框架内
+                .frame(width: cardWidth, height: cardHeight)
+                .clipped()
             
-            // 紫色底部条和文字
-            VStack {
+            VStack(spacing: 5) {
                 Text(card.title)
                     .font(.title3)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
-                    .padding(.vertical, 10) // 文字的垂直内边距，控制条的高度
-                    .padding(.horizontal, 10) // 文字的水平内边距，防止文字贴边
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 10)
+                
+                Text("\(card.duration) • \(card.type)")
+                    .font(.caption)
+                    .foregroundColor(.white.opacity(0.8))
+                    .padding(.bottom, 10)
             }
-            .frame(width: cardWidth, height: 40) // 固定紫色条的高度
-            .background(Color.purple) // 不透明的紫色背景
-            // 注意：紫色条的圆角将由外部 ZStack 的圆角修剪。
+            .frame(width: cardWidth)
+            .background(Color.purple)
         }
-        .cornerRadius(10) // 应用圆角到整个卡片（ZStack），这将同时修剪图片和紫色条的底部圆角
-        .shadow(radius: 10) // 阴影应用于整个ZStack
+        .cornerRadius(10)
+        .shadow(radius: 10)
     }
 }
 

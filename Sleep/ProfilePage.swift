@@ -50,18 +50,15 @@ struct ProfilePage: View {
                 
                 // 底部导航栏
                 HStack(spacing: 100) {
-                    TabItem(iconName: "moon.stars.fill", text: "Story", isSelected: selectedTab == .story)
-                        .onTapGesture {
-                            selectedTab = .story
-                        }
-                    TabItem(iconName: "music.note", text: "Music", isSelected: selectedTab == .music)
-                        .onTapGesture {
-                            selectedTab = .music
-                        }
-                    TabItem(iconName: "person.fill", text: "Profile", isSelected: selectedTab == .profile)
-                        .onTapGesture {
-                            selectedTab = .profile
-                        }
+                    TabItem(iconName: "moon.stars.fill", text: "Story", isSelected: selectedTab == .story, onTap: {
+                        selectedTab = .story
+                    })
+                    TabItem(iconName: "music.note", text: "Music", isSelected: selectedTab == .music, onTap: {
+                        selectedTab = .music
+                    })
+                    TabItem(iconName: "person.fill", text: "Profile", isSelected: selectedTab == .profile, onTap: {
+                        selectedTab = .profile
+                    })
                 }
             }
         }
