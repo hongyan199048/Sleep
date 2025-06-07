@@ -6,22 +6,27 @@
 //
 
 import SwiftUI
+import UIKit // 新增：引入UIKit框架
 
 struct Card: Identifiable {
     let id = UUID()
     let title: String
     let color: Color
+    let imageName: String // 新增：图片名称
 }
 
 struct MusicPage: View {
     @Binding var selectedTab: Destination
     
+    // 触感反馈生成器
+    private let feedbackGenerator = UIImpactFeedbackGenerator(style: .light) // .light 表示轻微震动，可选 .medium, .heavy, .soft, .rigid
+    
     @State private var currentIndex: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
     
     // 控制卡片的大小和间距
-    private let cardWidth: CGFloat = 150
-    private let cardHeight: CGFloat = 200
+    private let cardWidth: CGFloat = 200
+    private let cardHeight: CGFloat = 250
     private let spacing: CGFloat = 100 //卡片间距
     private let curveDepth: CGFloat = 100 // 新增：控制圆弧的深度
     private let scaleFactor: CGFloat = 0.3 // 新增：控制卡片缩放的速度
@@ -30,18 +35,19 @@ struct MusicPage: View {
     private let snapThresholdRatio: CGFloat = 0.2 // 新增：控制滑动吸附的灵敏度 (0.0 到 1.0之间)
     
     let cards: [Card] = [
-        Card(title: "音乐 1", color: .purple.opacity(0.8)),
-        Card(title: "音乐 2", color: .purple.opacity(0.8)),
-        Card(title: "音乐 3", color: .purple.opacity(0.8)),
-        Card(title: "音乐 4", color: .purple.opacity(0.8))
+        Card(title: "Music 1", color: .purple.opacity(0.8), imageName: "card_image_1"),
+        Card(title: "Music 2", color: .purple.opacity(0.8), imageName: "card_image_2"),
+        Card(title: "Music 3", color: .purple.opacity(0.8), imageName: "card_image_3"),
+        Card(title: "Music 4", color: .purple.opacity(0.8), imageName: "card_image_4")
     ]
     
     var body: some View {
         ZStack {
+            // 背景图片
             Image("dark_background_image")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
+                .resizable() // 使图片可调整大小
+                .scaledToFill() // 保持宽高比填充整个空间
+                .ignoresSafeArea() // 忽略安全区域，使图片延伸到屏幕边缘
                         
             VStack {
                 VStack {
@@ -66,7 +72,7 @@ struct MusicPage: View {
                     
                     HStack(spacing: spacing) {
                         ForEach(cards) { card in
-                            CardView(card: card)
+                            CardView(card: card, cardWidth: cardWidth, cardHeight: cardHeight)
                                 .frame(width: cardWidth, height: cardHeight)
                                 .scaleEffect(scale(for: card, centerIndex: liveCurrentIndex))
                                 .offset(y: offset(for: card, centerIndex: liveCurrentIndex))
@@ -99,6 +105,8 @@ struct MusicPage: View {
                                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                     currentIndex = targetIndex
                                     dragOffset = 0
+                                    // 触发触感反馈
+                                    feedbackGenerator.impactOccurred()
                                 }
                             }
                     )
@@ -150,16 +158,33 @@ struct MusicPage: View {
 
 struct CardView: View {
     let card: Card
+    let cardWidth: CGFloat
+    let cardHeight: CGFloat
     
     var body: some View {
-        RoundedRectangle(cornerRadius: 20)
-            .fill(card.color)
-            .overlay(
+        ZStack(alignment: .bottom) { // 将内容对齐到底部
+            // 主要图片背景，填充整个卡片区域
+            Image(card.imageName)
+                .resizable()
+                .scaledToFill()
+                .frame(width: cardWidth, height: cardHeight) // 图片尺寸与卡片尺寸一致
+                .clipped() // 确保图片裁剪在自身框架内
+            
+            // 紫色底部条和文字
+            VStack {
                 Text(card.title)
-                    .font(.title)
+                    .font(.title3)
+                    .fontWeight(.heavy)
                     .foregroundColor(.white)
-            )
-            .shadow(radius: 10)
+                    .padding(.vertical, 10) // 文字的垂直内边距，控制条的高度
+                    .padding(.horizontal, 10) // 文字的水平内边距，防止文字贴边
+            }
+            .frame(width: cardWidth, height: 40) // 固定紫色条的高度
+            .background(Color.purple) // 不透明的紫色背景
+            // 注意：紫色条的圆角将由外部 ZStack 的圆角修剪。
+        }
+        .cornerRadius(10) // 应用圆角到整个卡片（ZStack），这将同时修剪图片和紫色条的底部圆角
+        .shadow(radius: 10) // 阴影应用于整个ZStack
     }
 }
 

@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import UIKit // 新增：引入UIKit框架
 
 struct StartupPage: View {
     // 添加一个闭包属性，用于在按钮点击时执行外部传入的动作
     var onGetStarted: () -> Void
+    
+    // 触感反馈生成器
+    private let feedbackGenerator = UIImpactFeedbackGenerator(style: .light) // .light 表示轻微震动
 
     var body: some View {
         ZStack {
@@ -55,6 +59,8 @@ struct StartupPage: View {
                 Button(action: {
                     // 调用外部传入的动作
                     onGetStarted()
+                    // 触发触感反馈
+                    feedbackGenerator.impactOccurred()
                 }) {
                     Text("GET STARTED")
                         .font(.headline)
