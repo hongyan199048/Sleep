@@ -9,7 +9,6 @@ import SwiftUI
 
 struct StoryPage: View {
     @Binding var selectedTab: Destination
-    let onTabSelected: (Destination) -> Void
     
     var body: some View {
         ZStack {
@@ -61,6 +60,7 @@ struct StoryPage: View {
                 }
                 .frame(width: 350)
             }
+            .scrollIndicators(.hidden)
             
                 Spacer() // 将底部导航栏推到底部
 
@@ -68,13 +68,16 @@ struct StoryPage: View {
                 HStack(spacing: 100) {
                     TabItem(iconName: "moon.stars.fill", text: "Story", isSelected: selectedTab == .story)
                         .onTapGesture {
-                            onTabSelected(.story)
+                            selectedTab = .story
                         }
                     TabItem(iconName: "music.note", text: "Music", isSelected: selectedTab == .music)
                         .onTapGesture {
-                            onTabSelected(.music)
+                            selectedTab = .music
                         }
-                    TabItem(iconName: "person.fill", text: "Profile", isSelected: false)
+                    TabItem(iconName: "person.fill", text: "Profile", isSelected: selectedTab == .profile)
+                        .onTapGesture {
+                            selectedTab = .profile
+                        }
                 }
               
             }
@@ -210,6 +213,6 @@ struct TabItem: View {
 }
 
 #Preview {
-    StoryPage(selectedTab: .constant(.story), onTabSelected: { _ in })
+    StoryPage(selectedTab: .constant(.story))
 }
 

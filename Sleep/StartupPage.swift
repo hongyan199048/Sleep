@@ -23,13 +23,14 @@ struct StartupPage: View {
             // VStack 是垂直堆栈视图，用于将子视图垂直排列
             // Spacer() 是一个弹性空间，会占用所有可用的空间，将其他视图推到顶部或底部
             VStack {
-                Spacer()
+                //Spacer()
 
                 // Title
                 Text("Welcome to Sleep")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.purple)
+                    .padding(.top, 50.0)
 
                 // Description
                 Text("Explore the new kinds of sleep. It uses sound\nand visualization to create perfect conditions\nfor refreshing sleep.")
@@ -58,9 +59,9 @@ struct StartupPage: View {
                     Text("GET STARTED")
                         .font(.headline)
                         .foregroundColor(.white)
-                        .frame(width: 300, height: 60)
+                        .frame(width: 300, height: 50)
                         .background(
-                            RoundedRectangle(cornerRadius: 25)
+                            RoundedRectangle(cornerRadius: 35)
                                 .fill(Color.purple)
                         )
                 }
