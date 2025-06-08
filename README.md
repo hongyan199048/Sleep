@@ -39,7 +39,7 @@
 
 1. 克隆仓库
 ```bash
-git clone https://github.com/yourusername/Sleep.git
+git clone https://github.com/hongyan199048/Sleep.git
 ```
 
 2. 打开项目

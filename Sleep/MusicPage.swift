@@ -40,7 +40,7 @@ struct MusicPage: View {
     private let scaleFactor: CGFloat = 0.3        // 缩放因子
     private let maxScaleReduction: CGFloat = 0.7  // 最大缩放比例
     private let maxRotationAngle: Double = -25    // 最大旋转角度
-    private let snapThresholdRatio: CGFloat = 0.2 // 吸附阈值比例
+    private let snapThresholdRatio: CGFloat = 0.1 // 吸附阈值比例
     
     // 音乐卡片数据数组
     let cards: [Card] = [

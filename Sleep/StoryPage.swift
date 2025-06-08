@@ -39,7 +39,7 @@ struct StoryPage: View {
     private let scaleFactor: CGFloat = 0.3        // 缩放因子
     private let maxScaleReduction: CGFloat = 0.7  // 最大缩放比例
     private let maxRotationAngle: Double = -25    // 最大旋转角度
-    private let snapThresholdRatio: CGFloat = 0.2 // 吸附阈值比例
+    private let snapThresholdRatio: CGFloat = 0.1 // 吸附阈值比例
     
     let stories: [Story] = [
         Story(imageName: "guess_how_much_i_love_you", title: "猜猜我有多爱你", duration: "10 MIN", type: "睡前故事"),
