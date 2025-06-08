@@ -417,7 +417,7 @@ struct TabItem: View {
 
             Text(text)
                 .font(.caption2)
-                .foregroundColor(.purple)
+                .foregroundColor(isSelected ? .purple : .gray)
         }
         .onTapGesture {
             feedbackGenerator.impactOccurred()
